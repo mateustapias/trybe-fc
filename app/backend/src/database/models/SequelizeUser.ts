@@ -8,7 +8,7 @@ import {
 import db from '.';
 // import OtherModel from './OtherModel';
 
-class SequelizeUser extends Model<InferAttributes<SequelizeUser>,
+export default class SequelizeUser extends Model<InferAttributes<SequelizeUser>,
 InferCreationAttributes<SequelizeUser>> {
   declare id: CreationOptional<number>;
 
