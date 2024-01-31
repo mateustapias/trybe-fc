@@ -1,5 +1,5 @@
 import { Model, QueryInterface, DataTypes } from 'sequelize';
-import Team from '../../Interfaces/Team';
+import Team from '../../Interfaces/teams/ITeam';
 
 export default {
   up(queryInterface: QueryInterface) {
