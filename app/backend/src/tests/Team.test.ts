@@ -41,7 +41,7 @@ describe('Teams', () => {
 
   //   expect(...)
   // });
-
+  afterEach(sinon.restore);
   it('Retorna todos os times em "/teams', async () => {
     const validTeamBodyResponseArray = [TeamMock.validTeamBodyResponse, TeamMock.validTeamBodyResponse, TeamMock.validTeamBodyResponse];
     sinon.stub(SequelizeTeam, 'findAll').resolves(validTeamBodyResponseArray as any);
@@ -51,5 +51,21 @@ describe('Teams', () => {
     expect(status).to.equal(200);
     expect(body).to.deep.equal(validTeamBodyResponseArray);
   });
-  afterEach(sinon.restore);
+  it('Retorna apenas um time em "/teams/:id', async () => {
+    const validTeamBodyResponse = TeamMock.validTeamBodyResponse;
+    sinon.stub(SequelizeTeam, 'findByPk').resolves(validTeamBodyResponse as any);
+
+    const { status, body } = await chai.request(app).get('/teams/1');
+
+    expect(status).to.equal(200);
+    expect(body).to.deep.equal(validTeamBodyResponse);
+  });
+  it('Retorna um erro caso não encontre um time', async () => {
+    sinon.stub(SequelizeTeam, 'findByPk').resolves(null);
+
+    const { status, body } = await chai.request(app).get('/teams/1');
+
+    expect(status).to.equal(404);
+    // expect(body)
+  })
 });

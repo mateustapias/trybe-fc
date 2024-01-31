@@ -12,4 +12,12 @@ export default class TeamController {
 
     return res.status(mapStatusHTTP(status)).json(data);
   }
+
+  async listOne(req: Request, res: Response) {
+    const id = Number(req.params.id);
+
+    const { status, data } = await this.teamService.getTeamById(id);
+
+    return res.status(mapStatusHTTP(status)).json(data);
+  }
 }
