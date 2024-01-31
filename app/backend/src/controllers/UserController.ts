@@ -14,4 +14,11 @@ export default class UserController {
 
     return res.status(mapStatusHTTP(status)).json(data);
   }
+
+  static async getRole(req: Request, res: Response) {
+    const { user } = res.locals;
+    const { role } = user;
+
+    return res.status(200).json({ role });
+  }
 }

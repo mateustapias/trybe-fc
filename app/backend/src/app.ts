@@ -34,7 +34,7 @@ class App {
     this.app.use(accessControl);
   }
 
-  private routes() {
+  private routes(): void {
     this.app.use(router);
   }
 

@@ -2,7 +2,7 @@ const mockFields = {
   id: 1,
   username: 'mockUsername',
   role: 'mockRole',
-  email: 'mockEmail',
+  email: 'mockEmail@email.com',
   password: 'mockPassword',
 }
 

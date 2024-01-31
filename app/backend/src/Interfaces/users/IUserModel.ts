@@ -1,4 +1,4 @@
-import { IUser } from './IUser';
+import IUser from './IUser';
 
 export default interface IUserModel {
   // findById(id: number): Promise<IUser | null>;

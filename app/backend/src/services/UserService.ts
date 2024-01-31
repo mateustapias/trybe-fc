@@ -21,15 +21,9 @@ export default class UserService {
       };
       return serviceResponse;
     }
-    // if (!foundUser || !compareSync(loginData.password, foundUser.password)) {
-    //   serviceResponse = {
-    //     status: 'UNAUTHORIZED', data: { message: 'Username or password invalid' },
-    //   };
-    //   return serviceResponse;
-    // }
 
-    const { id, email } = foundUser;
-    const token = jwtUtil.signToken({ id, email });
+    const { id, email, role } = foundUser;
+    const token = jwtUtil.signToken({ id, email, role });
     serviceResponse = { status: 'SUCCESSFUL', data: { token } };
 
     return serviceResponse;
