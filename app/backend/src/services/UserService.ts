@@ -16,15 +16,8 @@ export default class UserService {
     const foundUser = await this.userModel.findOne(loginData.email);
 
     if (!foundUser || !compareSync(loginData.password, foundUser.password)) {
-      console.log(`
-      ${foundUser?.password}
-      ${loginData.password}`);
-      if (foundUser?.password) {
-        console.log(compareSync(loginData.password, foundUser.password));
-      }
       serviceResponse = {
-        status: 'UNAUTHORIZED', data: { message: `${foundUser?.password}` },
-        // status: 'UNAUTHORIZED', data: { message: 'Username or password invalid' },
+        status: 'UNAUTHORIZED', data: { message: 'Invalid email or password' },
       };
       return serviceResponse;
     }

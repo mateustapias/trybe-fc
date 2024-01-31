@@ -10,8 +10,6 @@ export default class UserModel implements IUserModel {
       where: { email },
     });
     if (dbData === null) return null;
-    console.log(dbData);
-    console.log(dbData.dataValues);
 
     return dbData;
   }
