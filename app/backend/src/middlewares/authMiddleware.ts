@@ -22,7 +22,8 @@ export default class AuthMiddleware {
       res.locals.user = decoded;
       next();
     } catch (e) {
-      return res.status(401).json({ message: 'Token must be a valid token' });
+      return res
+        .status(mapStatusHTTP('UNAUTHORIZED')).json({ message: 'Token must be a valid token' });
     }
   }
 }

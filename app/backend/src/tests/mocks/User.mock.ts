@@ -13,6 +13,7 @@ const validUserBody = { email, password };
 const validUserModelReturn = { ...mockFields };
 
 export default { 
+  mockFields,
   validUserBody,
   validUserModelReturn,
 }
