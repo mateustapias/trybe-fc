@@ -6,21 +6,20 @@ import {
   CreationOptional,
 } from 'sequelize';
 import db from '.';
-// import OtherModel from './OtherModel';
+import SequelizeMatch from './SequelizeMatch';
 
 class SequelizeTeam extends Model<InferAttributes<SequelizeTeam>,
 InferCreationAttributes<SequelizeTeam>> {
   declare id: CreationOptional<number>;
-
   declare teamName: string;
 }
 
 SequelizeTeam.init({
   id: {
     type: DataTypes.INTEGER,
-    allowNull: false,
     primaryKey: true,
     autoIncrement: true,
+    allowNull: false,
   },
   teamName: {
     type: DataTypes.STRING,
@@ -33,15 +32,10 @@ SequelizeTeam.init({
   underscored: true,
 });
 
-/**
-  * `Workaround` para aplicar as associations em TS:
-  * Associations 1:N devem ficar em uma das instâncias de modelo
-  * */
+SequelizeTeam.hasMany(SequelizeMatch, { foreignKey: 'id', as: 'homeTeamId' });
+SequelizeTeam.hasMany(SequelizeMatch, { foreignKey: 'id', as: 'awayTeamId' });
 
-// OtherModel.belongsTo(Example, { foreignKey: 'campoA', as: 'campoEstrangeiroA' });
-// OtherModel.belongsTo(Example, { foreignKey: 'campoB', as: 'campoEstrangeiroB' });
-
-// Example.hasMany(OtherModel, { foreignKey: 'campoC', as: 'campoEstrangeiroC' });
-// Example.hasMany(OtherModel, { foreignKey: 'campoD', as: 'campoEstrangeiroD' });
+SequelizeMatch.belongsTo(SequelizeTeam, { foreignKey: 'homeTeamId' });
+SequelizeMatch.belongsTo(SequelizeTeam, { foreignKey: 'awayTeamId' });
 
 export default SequelizeTeam;

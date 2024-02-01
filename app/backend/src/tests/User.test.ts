@@ -96,7 +96,6 @@ describe('Users', () => {
       const { id, email, role } = UserMock.mockFields;
       const incorrectToken = "mockedToken";
       sinon.stub(jwt, 'verify').throws(new Error());
-      // sinon.stub(jwtUtil, 'verifyToken').returns(tokenPayload);
   
       const { status, body } = await chai.request(app).get('/login/role').set('authorization', incorrectToken);
   

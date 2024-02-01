@@ -6,9 +6,9 @@ export default {
     return queryInterface.createTable<Model<IUser>>('users', {
       id: {
         type: DataTypes.INTEGER,
-        allowNull: false,
-        autoIncrement: true,
         primaryKey: true,
+        autoIncrement: true,
+        allowNull: false,
       },
       username: {
         type: DataTypes.STRING,
@@ -29,6 +29,6 @@ export default {
     });
   },
   down(queryInterface: QueryInterface) {
-    return queryInterface.dropTable('teams');
+    return queryInterface.dropTable('users');
   },
 };

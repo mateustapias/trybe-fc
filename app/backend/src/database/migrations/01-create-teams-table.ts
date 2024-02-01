@@ -6,9 +6,9 @@ export default {
     return queryInterface.createTable<Model<ITeam>>('teams', {
       id: {
         type: DataTypes.INTEGER,
-        allowNull: false,
-        autoIncrement: true,
         primaryKey: true,
+        autoIncrement: true,
+        allowNull: false,
       },
       teamName: {
         type: DataTypes.STRING,
