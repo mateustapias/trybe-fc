@@ -31,17 +31,23 @@ export default class MatchModel implements IMatchModel {
     return dbData;
   }
 
-  // async findAllInProgress(): Promise<IMatch[]> {
-  //   const dbData = await this.model.findAll({
-  //     where: {
-  //       inProgress: true,
-  //     },
-  //     include: [
-  //       { model: SequelizeTeam, as: 'homeTeam', attributes: ['teamName'] },
-  //       { model: SequelizeTeam, as: 'awayTeam', attributes: ['teamName'] },
-  //     ],
-  //   });
+  async endMatch(id: number): Promise<void> {
+    await this.model.update({
+      inProgress: false,
+    }, {
+      where: {
+        id,
+      },
+    });
+  }
 
-  //   return dbData;
-  // }
+  async patchGoals(id: number, homeTeamGoals: number, awayTeamGoals: number): Promise<void> {
+    await this.model.update({
+      homeTeamGoals, awayTeamGoals,
+    }, {
+      where: {
+        id,
+      },
+    });
+  }
 }

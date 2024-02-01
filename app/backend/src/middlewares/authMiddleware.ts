@@ -18,7 +18,6 @@ export default class AuthMiddleware {
 
     try {
       const decoded = jwtUtil.verifyToken(token);
-      // return res.status(200).json({ message: decoded });
       res.locals.user = decoded;
       next();
     } catch (e) {
