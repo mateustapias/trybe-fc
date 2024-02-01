@@ -15,7 +15,7 @@ chai.use(chaiHttp);
 
 const { expect } = chai;
 
-describe('Teams', () => {
+describe('Team', () => {
   /**
    * Exemplo do uso de stubs com tipos
    */

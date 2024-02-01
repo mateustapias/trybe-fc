@@ -17,7 +17,7 @@ chai.use(chaiHttp);
 
 const { expect } = chai;
 
-describe('Users', () => {
+describe('User', () => {
   afterEach(sinon.restore);
   describe('Login', function () {
     it('Retorna um token se usuário loga com sucesso', async function() {
