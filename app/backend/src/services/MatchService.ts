@@ -1,7 +1,7 @@
 import { ServiceMessage, ServiceResponse } from '../types/ServiceResponse';
 import { IMatchModel } from '../Interfaces/matches/IMatchModel';
 import MatchModel from '../models/MatchModel';
-import { IMatch } from '../Interfaces/matches/IMatch';
+import { IMatch, INewMatchData } from '../Interfaces/matches/IMatch';
 
 export default class MatchService {
   constructor(
@@ -34,5 +34,11 @@ export default class MatchService {
     await this.matchModel.patchGoals(id, homeTeamGoals, awayTeamGoals);
 
     return { status: 'SUCCESSFUL', data: { message: 'Score updated' } };
+  }
+
+  async addMatch(matchData: INewMatchData): Promise<ServiceResponse<IMatch>> {
+    const newMatch = await this.matchModel.addMatch(matchData);
+
+    return { status: 'CREATED', data: newMatch };
   }
 }

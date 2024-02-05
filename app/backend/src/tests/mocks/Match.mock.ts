@@ -14,9 +14,15 @@ const mockMatchFields = {
 };
 const { id, homeTeamId, homeTeamGoals, awayTeamId, awayTeamGoals, inProgress, homeTeam, awayTeam } = mockMatchFields;
 
-const validMatchBodyResponse = { ...mockMatchFields }
+const validMatchBodyResponse = { ...mockMatchFields };
+
+const validPatchMatchBodyResponse = {
+  homeTeamGoals: 2,
+  awayTeamGoals: 3,
+}
 
 export default {
   mockMatchFields,
   validMatchBodyResponse,
+  validPatchMatchBodyResponse,
 }

@@ -40,4 +40,12 @@ export default class MatchController {
 
     return res.status(mapStatusHTTP(status)).json(data);
   }
+
+  async addMatch(req: Request, res: Response) {
+    // const { homeTeamId, awayTeamId, homeTeamGoals, awayTeamGoals } = req.body;
+    // const { status, data } = await this.matchService.registerMatch(homeTeamId, awayTeamId, homeTeamGoals, awayTeamGoals);
+    const { status, data } = await this.matchService.addMatch(req.body);
+
+    return res.status(mapStatusHTTP(status)).json(data);
+  }
 }

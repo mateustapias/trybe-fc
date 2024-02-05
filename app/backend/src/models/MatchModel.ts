@@ -1,5 +1,5 @@
 import { IMatchModel } from '../Interfaces/matches/IMatchModel';
-import { IMatch } from '../Interfaces/matches/IMatch';
+import { IMatch, INewMatchData } from '../Interfaces/matches/IMatch';
 import SequelizeMatch from '../database/models/SequelizeMatch';
 import SequelizeTeam from '../database/models/SequelizeTeam';
 
@@ -49,5 +49,11 @@ export default class MatchModel implements IMatchModel {
         id,
       },
     });
+  }
+
+  async addMatch(matchData: INewMatchData): Promise<IMatch> {
+    const dbData = await this.model.create({ ...matchData, inProgress: true });
+
+    return dbData;
   }
 }

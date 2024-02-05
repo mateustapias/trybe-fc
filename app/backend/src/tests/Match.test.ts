@@ -20,11 +20,13 @@ const { expect } = chai;
 
 describe('Match', () => {
   afterEach(sinon.restore);
+
   it('Retorna todas partidas', async function () {
     const validMatchBodyResponseArray = [MatchMock.validMatchBodyResponse, MatchMock.validMatchBodyResponse, MatchMock.validMatchBodyResponse];
     sinon.stub(SequelizeMatch, 'findAll').resolves(validMatchBodyResponseArray as any);
 
     const { status, body } = await chai.request(app).get('/matches').query({ inProgress: undefined });
+    // const { status, body } = await chai.request(app).get('/matches');
 
     expect(status).to.equal(200);
     expect(body).to.deep.equal(validMatchBodyResponseArray);
@@ -33,7 +35,7 @@ describe('Match', () => {
     const validMatchBodyResponseArray = [MatchMock.validMatchBodyResponse, MatchMock.validMatchBodyResponse, MatchMock.validMatchBodyResponse];
     sinon.stub(SequelizeMatch, 'findAll').resolves(validMatchBodyResponseArray as any);
 
-    const { status, body } = await chai.request(app).get('/matches').query({ inProgress: 'true' });
+    const { status, body } = await chai.request(app).get('/matches').query({ inProgress: true });
 
     expect(status).to.equal(200);
     expect(body).to.deep.equal(validMatchBodyResponseArray);
@@ -42,9 +44,37 @@ describe('Match', () => {
     const validMatchBodyResponseArray = [MatchMock.validMatchBodyResponse, MatchMock.validMatchBodyResponse, MatchMock.validMatchBodyResponse];
     sinon.stub(SequelizeMatch, 'findAll').resolves(validMatchBodyResponseArray as any);
 
-    const { status, body } = await chai.request(app).get('/matches').query({ inProgress: 'false' });
+    const { status, body } = await chai.request(app).get('/matches').query({ inProgress: false });
 
     expect(status).to.equal(200);
     expect(body).to.deep.equal(validMatchBodyResponseArray);
+  });
+  it('Finaliza partida', async function () {
+    const { id, email, role } = UserMock.mockFields;
+    const token = "mockedToken";
+    const tokenPayload = { id, email, role };
+    sinon.stub(jwt, 'verify').returns(tokenPayload as any);
+    sinon.stub(SequelizeMatch, 'update').resolves();
+
+    const { status, body } = await chai.request(app).patch('/matches/1/finish').set('authorization', token);
+
+    expect(status).to.equal(200);
+    expect(body).to.deep.equal({ message: 'Finished' });
+  });
+  it('Atualiza partida', async function () {
+    const { id, email, role } = UserMock.mockFields;
+    const token = "mockedToken";
+    const tokenPayload = { id, email, role };
+    sinon.stub(jwt, 'verify').returns(tokenPayload as any);
+    sinon.stub(SequelizeMatch, 'update').resolves();
+
+    const { status, body } = await chai
+      .request(app)
+      .patch('/matches/1')
+      .send(MatchMock.validPatchMatchBodyResponse)
+      .set('authorization', token);
+
+    expect(status).to.equal(200);
+    expect(body).to.deep.equal({ message: 'Score updated' });
   });
 });

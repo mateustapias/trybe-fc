@@ -26,4 +26,10 @@ matchesRouter.patch(
   (req: Request, res: Response) => matchController.updateScore(req, res),
 );
 
+matchesRouter.post(
+  '/',
+  AuthMiddleware.auth,
+  (req: Request, res: Response) => matchController.addMatch(req, res),
+);
+
 export default matchesRouter;
