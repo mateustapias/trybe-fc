@@ -14,6 +14,20 @@ class Validations {
     }
     next();
   }
+
+  static async validateAddMatch(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ): Promise<Response | void> {
+    let errorMessage: string;
+    const { homeTeamId, awayTeamId } = req.body;
+    if (homeTeamId === awayTeamId) {
+      errorMessage = 'It is not possible to create a match with two equal teams';
+      return res.status(mapStatusHTTP('UNPROCESSABLE_ENTITY')).json({ message: errorMessage });
+    }
+    next();
+  }
 }
 
 export default Validations;

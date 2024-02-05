@@ -10,6 +10,7 @@ export default function mapStatusHTTP(status: HTTPStatus): number {
     case 'UNAUTHORIZED': return 401;
     case 'NOT_FOUND': return 404;
     case 'CONFLICT': return 409;
+    case 'UNPROCESSABLE_ENTITY': return 422;
     default: return 500;
   }
 }

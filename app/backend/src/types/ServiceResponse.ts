@@ -1,7 +1,12 @@
 export type ServiceMessage = { message: string };
 
 export type ServiceResponseSuccessType = 'SUCCESSFUL' | 'CREATED';
-export type ServiceResponseErrorType = 'BAD_REQUEST' | 'UNAUTHORIZED' | 'NOT_FOUND' | 'CONFLICT';
+export type ServiceResponseErrorType =
+  'BAD_REQUEST'
+  | 'UNAUTHORIZED'
+  | 'NOT_FOUND'
+  | 'CONFLICT'
+  | 'UNPROCESSABLE_ENTITY';
 
 export type ServiceResponseError = {
   status: ServiceResponseErrorType,

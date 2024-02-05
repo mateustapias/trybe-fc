@@ -6,6 +6,15 @@ import SequelizeTeam from '../database/models/SequelizeTeam';
 export default class MatchModel implements IMatchModel {
   private model = SequelizeMatch;
 
+  async findOne(id: number): Promise<IMatch | null> {
+    const dbData = await this.model.findOne({
+      where: {
+        id,
+      },
+    });
+    return dbData;
+  }
+
   async findAll(): Promise<IMatch[]> {
     const dbData = await this.model.findAll({
       include: [

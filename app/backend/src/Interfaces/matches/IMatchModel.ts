@@ -1,6 +1,7 @@
 import { IMatch, INewMatchData } from './IMatch';
 
 export interface IMatchModel {
+  findOne(id: number): Promise<IMatch | null>
   findAll(): Promise<IMatch[]>
   findAllFiltered(inProgress: boolean): Promise<IMatch[]>
   endMatch(id: number): Promise<void>

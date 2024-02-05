@@ -1,6 +1,7 @@
 import { Request, Router, Response } from 'express';
 import AuthMiddleware from '../middlewares/authMiddleware';
 import MatchController from '../controllers/MatchController';
+import Validations from '../middlewares/validationMiddleware';
 
 const matchController = new MatchController();
 
@@ -29,6 +30,7 @@ matchesRouter.patch(
 matchesRouter.post(
   '/',
   AuthMiddleware.auth,
+  Validations.validateAddMatch,
   (req: Request, res: Response) => matchController.addMatch(req, res),
 );
 

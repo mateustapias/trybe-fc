@@ -8,6 +8,20 @@ export default class MatchService {
     private matchModel: IMatchModel = new MatchModel(),
   ) { }
 
+  private async getTeams(homeTeamId: number, awayTeamId: number): Promise<boolean> {
+    const foundTeams = await Promise.all([homeTeamId, awayTeamId].map(async (id) => {
+      const foundTeam = await this.matchModel.findOne(id);
+      if (!foundTeam) {
+        return false;
+      }
+      return true;
+    }));
+
+    const teamsExists = foundTeams.every((team) => team);
+
+    return teamsExists;
+  }
+
   async getAllMatches(
     inProgress: boolean | undefined = undefined,
   ): Promise<ServiceResponse<IMatch[]>> {
@@ -37,6 +51,11 @@ export default class MatchService {
   }
 
   async addMatch(matchData: INewMatchData): Promise<ServiceResponse<IMatch>> {
+    const teamsExists = await this.getTeams(matchData.homeTeamId, matchData.awayTeamId);
+
+    if (!teamsExists) {
+      return { status: 'NOT_FOUND', data: { message: 'There is no team with such id!' } };
+    }
     const newMatch = await this.matchModel.addMatch(matchData);
 
     return { status: 'CREATED', data: newMatch };
