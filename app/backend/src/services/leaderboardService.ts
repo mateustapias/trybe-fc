@@ -3,8 +3,6 @@ import { ILeaderboardModel } from '../Interfaces/leaderboard/ILeaderboardModel';
 import LeaderboardModel from '../models/LeaderboardModel';
 import { ILeaderboard } from '../Interfaces/leaderboard/ILeaderboard';
 
-// type Side = 'home' | 'away' | undefined;
-
 export default class LeaderBoardService {
   constructor(
     private leaderboardModel: ILeaderboardModel = new LeaderboardModel(),

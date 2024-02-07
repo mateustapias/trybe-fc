@@ -1,4 +1,3 @@
-// import jwt from 'jsonwebtoken';
 import { sign, verify } from 'jsonwebtoken';
 
 const secret = process.env.JWT_SECRET || 'secret';

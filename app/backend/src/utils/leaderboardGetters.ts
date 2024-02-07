@@ -103,7 +103,8 @@ function getTeamPoints(teamId: number, matchesPerTeam: IMatch[]) {
 function getTeamMatches(id: number, allMatches: IMatch[], teamSide?: Side): MatchesPerTeam {
   const matchesPerTeam = allMatches.filter((match) => {
     if (!teamSide) {
-      if (match.inProgress === false) return true;
+      if ((match.homeTeamId === id || match.awayTeamId === id)
+        && match.inProgress === false) return true;
       return false;
     }
     const teamSideId = teamSide === 'home' ? match.homeTeamId : match.awayTeamId;
@@ -114,14 +115,12 @@ function getTeamMatches(id: number, allMatches: IMatch[], teamSide?: Side): Matc
 }
 
 function getTeamData(id: number, matchesPerTeam: IMatch[]) {
-  // const name = teams[index].teamName;
   const totalPoints = getTeamPoints(id, matchesPerTeam);
   const goals = getTeamGoals(id, matchesPerTeam);
   const results = getTeamResults(id, matchesPerTeam);
   const totalGames = matchesPerTeam.length;
   const efficiency = getEfficiency(totalGames, totalPoints);
   return ({
-    // name,
     totalPoints,
     totalGames,
     ...results,

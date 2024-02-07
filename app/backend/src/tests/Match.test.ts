@@ -26,7 +26,6 @@ describe('Match', () => {
     sinon.stub(SequelizeMatch, 'findAll').resolves(validMatchBodyResponseArray as any);
 
     const { status, body } = await chai.request(app).get('/matches').query({ inProgress: undefined });
-    // const { status, body } = await chai.request(app).get('/matches');
 
     expect(status).to.equal(200);
     expect(body).to.deep.equal(validMatchBodyResponseArray);

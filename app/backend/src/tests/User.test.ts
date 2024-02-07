@@ -4,14 +4,11 @@ import * as chai from 'chai';
 import chaiHttp = require('chai-http');
 
 import { app } from '../app';
-import Example from '../database/models/ExampleModel';
 
-import { Response } from 'superagent';
 import SequelizeUser from '../database/models/SequelizeUser';
 import UserMock from './mocks/User.mock';
 import * as bcrypt from 'bcryptjs';
 import * as jwt from 'jsonwebtoken';
-import jwtUtil from '../utils/jwtUtil';
 
 chai.use(chaiHttp);
 
@@ -54,7 +51,6 @@ describe('User', () => {
       expect(body).to.deep.equal({ message: 'Invalid email or password' });
     });
     it('Retorna um erro se login for feito com usuário inexistente no banco', async function() {
-      // const mockInvalidUser = { ...UserMock.validUserBody, username: "invalid" };
       sinon.stub(SequelizeUser, 'findOne').resolves(null);
   
       const { status, body } = await chai.request(app).post('/login').send(UserMock.validUserBody);

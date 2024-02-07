@@ -4,7 +4,6 @@ import Validations from '../middlewares/validationMiddleware';
 import AuthMiddleware from '../middlewares/authMiddleware';
 
 const userController = new UserController();
-// const authMiddleware = new AuthMiddleware();
 
 const loginRouter = Router();
 
@@ -16,7 +15,6 @@ loginRouter.post(
 loginRouter.get(
   '/role',
   AuthMiddleware.auth,
-  // TODO: TIRAR O TERMO ESTÁTICO
   (req: Request, res: Response) => UserController.getRole(req, res),
 );
 
