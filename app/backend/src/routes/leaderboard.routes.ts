@@ -10,7 +10,13 @@ const leaderboardRouter = Router();
 leaderboardRouter.get(
   '/home',
   // AuthMiddleware.auth,
-  (req: Request, res: Response) => leaderboardController.listAll(req, res),
+  (req: Request, res: Response) => leaderboardController.listAllinHome(req, res),
+);
+
+leaderboardRouter.get(
+  '/away',
+  // AuthMiddleware.auth,
+  (req: Request, res: Response) => leaderboardController.listAllAway(req, res),
 );
 
 export default leaderboardRouter;

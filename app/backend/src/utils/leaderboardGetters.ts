@@ -1,6 +1,7 @@
 import ITeam from '../Interfaces/teams/ITeam';
 import { IMatch } from '../Interfaces/matches/IMatch';
 import { ILeaderboard } from '../Interfaces/leaderboard/ILeaderboard';
+import { Side } from '../types/Side';
 
 type MatchesPerTeam = {
   id: number,
@@ -99,15 +100,15 @@ function getTeamPoints(teamId: number, matchesPerTeam: IMatch[]) {
   return points;
 }
 
-function getTeamMatches(id: number, allMatches: IMatch[]): MatchesPerTeam {
+function getTeamMatches(id: number, allMatches: IMatch[], teamSide?: Side): MatchesPerTeam {
   const matchesPerTeam = allMatches.filter((match) => {
-    if (match.homeTeamId === id
-      && match.inProgress === false) return true;
+    if (!teamSide) {
+      if (match.inProgress === false) return true;
+      return false;
+    }
+    const teamSideId = teamSide === 'home' ? match.homeTeamId : match.awayTeamId;
+    if (teamSideId === id && match.inProgress === false) return true;
     return false;
-    // if ((match.homeTeamId === id
-    //   || match.awayTeamId === id)
-    //   && match.inProgress === false) return true;
-    // return false;
   });
   return { id, matchesPerTeam };
 }
@@ -135,8 +136,12 @@ function sortTeamsData(teamsData: ILeaderboard[]) {
     || b.goalsFavor - a.goalsFavor);
 }
 
-export default function getLeaderboard(teams: ITeam[], matches: IMatch[]): ILeaderboard[] {
-  const teamMatches = teams.map((team) => getTeamMatches(team.id, matches));
+export default function getLeaderboard(
+  teams: ITeam[],
+  matches: IMatch[],
+  teamSide?: Side,
+): ILeaderboard[] {
+  const teamMatches = teams.map((team) => getTeamMatches(team.id, matches, teamSide));
   const teamsData: ILeaderboard[] = teamMatches.map(({ id, matchesPerTeam }, index) => {
     const name = teams[index].teamName;
     const teamData = getTeamData(id, matchesPerTeam);
