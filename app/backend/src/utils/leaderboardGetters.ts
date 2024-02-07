@@ -25,6 +25,11 @@ function isTeamInHome(teamId: number, homeTeamId: number): boolean {
   return teamId === homeTeamId;
 }
 
+function getEfficiency(totalMatches: number, totalPoints: number): string {
+  const efficiency = ((totalPoints / (totalMatches * 3)) * 100).toFixed(2);
+  return efficiency;
+}
+
 function getTeamGoals(teamId: number, matchesPerTeam: IMatch[]): Goals {
   const goals = {
     goalsFavor: 0,
@@ -43,7 +48,7 @@ function getTeamGoals(teamId: number, matchesPerTeam: IMatch[]): Goals {
     }
   });
   const goalsBalance = goalsFavor - goalsOwn;
-  return { ...goals, goalsBalance };
+  return { goalsFavor, goalsOwn, goalsBalance };
 }
 
 function getMatchResult(
@@ -63,6 +68,7 @@ function getTeamResults(teamId: number, matchesPerTeam: IMatch[]): Results {
     const result = isTeamInHome(teamId, homeTeamId)
       ? getMatchResult(homeTeamGoals, awayTeamGoals)
       : getMatchResult(awayTeamGoals, homeTeamGoals);
+    // SUG: podia tentar criar uma função para esse switch que nem no getMatchPoints, mas não sei como
     switch (result) {
       case 'win': results.totalVictories += 1; break;
       case 'draw': results.totalDraws += 1; break;
@@ -95,29 +101,47 @@ function getTeamPoints(teamId: number, matchesPerTeam: IMatch[]) {
 
 function getTeamMatches(id: number, allMatches: IMatch[]): MatchesPerTeam {
   const matchesPerTeam = allMatches.filter((match) => {
-    if (match.homeTeamId === id || match.awayTeamId === id) return true;
+    if (match.homeTeamId === id
+      && match.inProgress === false) return true;
     return false;
+    // if ((match.homeTeamId === id
+    //   || match.awayTeamId === id)
+    //   && match.inProgress === false) return true;
+    // return false;
   });
   return { id, matchesPerTeam };
 }
 
+function getTeamData(id: number, matchesPerTeam: IMatch[]) {
+  // const name = teams[index].teamName;
+  const totalPoints = getTeamPoints(id, matchesPerTeam);
+  const goals = getTeamGoals(id, matchesPerTeam);
+  const results = getTeamResults(id, matchesPerTeam);
+  const totalGames = matchesPerTeam.length;
+  const efficiency = getEfficiency(totalGames, totalPoints);
+  return ({
+    // name,
+    totalPoints,
+    totalGames,
+    ...results,
+    ...goals,
+    efficiency,
+  });
+}
+
+function sortTeamsData(teamsData: ILeaderboard[]) {
+  return teamsData.sort((a, b) => b.totalPoints - a.totalPoints
+    || b.goalsBalance - a.goalsBalance
+    || b.goalsFavor - a.goalsFavor);
+}
+
 export default function getLeaderboard(teams: ITeam[], matches: IMatch[]): ILeaderboard[] {
   const teamMatches = teams.map((team) => getTeamMatches(team.id, matches));
-  return teamMatches.map(({ id, matchesPerTeam }, index) => {
+  const teamsData: ILeaderboard[] = teamMatches.map(({ id, matchesPerTeam }, index) => {
     const name = teams[index].teamName;
-    const totalPoints = getTeamPoints(id, matchesPerTeam);
-    const { goalsFavor, goalsOwn, goalsBalance } = getTeamGoals(id, matchesPerTeam);
-    const { totalVictories, totalDraws, totalLosses } = getTeamResults(id, matchesPerTeam);
-    const totalGames = matchesPerTeam.length;
-    return ({ name,
-      totalPoints,
-      goalsFavor,
-      goalsOwn,
-      goalsBalance,
-      totalVictories,
-      totalDraws,
-      totalLosses,
-      totalGames,
-    });
+    const teamData = getTeamData(id, matchesPerTeam);
+    return { name, ...teamData };
   });
+  const sortedTeamsData = sortTeamsData(teamsData);
+  return sortedTeamsData;
 }
