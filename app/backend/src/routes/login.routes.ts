@@ -16,6 +16,7 @@ loginRouter.post(
 loginRouter.get(
   '/role',
   AuthMiddleware.auth,
+  // TODO: TIRAR O TERMO ESTÁTICO
   (req: Request, res: Response) => UserController.getRole(req, res),
 );
 
